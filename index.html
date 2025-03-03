@@ -12,116 +12,379 @@
             align-items: center;
             height: 100vh;
             text-align: center;
-            font-family: Arial, sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: #fce4ec;
             overflow: hidden;
+            transition: background-color 1s ease;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 80%;
+            position: relative;
+            z-index: 2;
+            transform-origin: center;
+            animation: pulse 2s infinite alternate;
         }
         h1 {
             color: #d81b60;
             animation: fadeIn 2s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5rem;
         }
         p {
-            font-size: 18px;
-            animation: fadeIn 2s ease-in-out;
+            font-size: 1.2rem;
+            animation: fadeIn 2.5s ease-in-out;
+            line-height: 1.6;
+            margin-bottom: 25px;
         }
         .button-container {
             margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .yes-button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 30px;
+            font-size: 18px;
             background-color: #d81b60;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         .yes-button:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+            background-color: #ff4081;
         }
         .no-button {
-            position: absolute;
-            padding: 10px 20px;
-            font-size: 16px;
+            position: relative;
+            padding: 12px 30px;
+            font-size: 18px;
             background-color: #b0bec5;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
         }
-        .hearts {
+        .no-button:hover {
+            background-color: #90a4ae;
+        }
+        .hearts-container {
             position: absolute;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
         .heart {
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            clip-path: polygon(50% 0%, 100% 40%, 80% 100%, 50% 80%, 20% 100%, 0% 40%);
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #ff4081;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 75%, 18% 100%, 0% 38%);
             opacity: 0;
-            animation: floatUp 3s infinite ease-in-out;
+            animation: floatUp 4s infinite ease-in-out;
         }
+        .teddy {
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .teddy img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .teddy:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+        .flowers {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            z-index: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        .flower {
+            width: 40px;
+            height: 40px;
+            background-color: #ff9e80;
+            border-radius: 50%;
+            position: relative;
+            animation: sway 3s infinite ease-in-out alternate;
+        }
+        .flower::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            width: 6px;
+            height: 60px;
+            background-color: #81c784;
+            transform: translateX(-50%);
+        }
+        .flower:nth-child(2n) {
+            background-color: #b39ddb;
+            animation-delay: 0.5s;
+        }
+        .flower:nth-child(3n) {
+            background-color: #90caf9;
+            animation-delay: 1s;
+        }
+        .hidden {
+            display: none;
+        }
+        #loveMessage {
+            animation: scaleIn 1s ease-in-out;
+        }
+        .love-gif {
+            width: 200px;
+            height: 200px;
+            margin: 20px 0;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .message-text {
+            font-size: 24px;
+            color: #d81b60;
+            margin: 10px 0;
+            animation: bounce 1s infinite alternate;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffeb3b;
+            top: -10px;
+            z-index: 0;
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100px); opacity: 0; }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
         }
-        .hidden {
-            display: none;
+        @keyframes sway {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        @keyframes rainbow {
+            0% { background-color: #fce4ec; }
+            20% { background-color: #e8f5e9; }
+            40% { background-color: #e3f2fd; }
+            60% { background-color: #fff8e1; }
+            80% { background-color: #f3e5f5; }
+            100% { background-color: #fce4ec; }
         }
     </style>
 </head>
 <body>
-    <div class="hearts">
-        <div class="heart" style="animation-delay: 0s;"></div>
-        <div class="heart" style="animation-delay: 0.5s;"></div>
-        <div class="heart" style="animation-delay: 1s;"></div>
-    </div>
-    <h1>Syahida, I'm Really Sorry 😞</h1>
-    <p>I never meant to hurt you. It was a silly mistake, and I feel terrible about it. Can you please forgive me, Sayang?</p>
-    <div class="button-container">
-        <button class="yes-button" onclick="showLove()">Yes, I forgive you</button>
-        <button class="no-button" id="noButton">No</button>
+    <div class="hearts-container" id="heartsContainer"></div>
+    <div class="flowers">
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
+        <div class="flower"></div>
     </div>
     
-    <div id="loveMessage" class="hidden">
-        <h2>Yay! Thank you, Syahida! ❤️</h2>
-        <img src="https://share.icloud.com/photos/04fT2h9hOJru59uVfruKxgWsw" alt="Cute heart gif">
+    <div class="container" id="mainContainer">
+        <h1>Syahida, I'm Really Sorry 😞</h1>
+        <p id="message">I never meant to hurt you. It was a silly mistake, and I feel terrible about it. Can you please forgive me, Sayang?</p>
+        
+        <div class="teddy" onclick="teddyClick()">
+            <div class="tenor-gif-embed" data-postid="18519830" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/love-bear-panda-gif-18519830">Love Bear Sticker</a>from <a href="https://tenor.com/search/love-stickers">Love Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+        </div>
+        
+        <div class="button-container">
+            <button class="yes-button" onclick="showLove()">Yes, I forgive you</button>
+            <button class="no-button" id="noButton">No</button>
+        </div>
+    </div>
+    
+    <div id="loveMessage" class="hidden container">
+        <h2 class="message-text">Yay! Thank you, Syahida! ❤️</h2>
+        <div class="love-gif">
+            <a href="https://ibb.co/RGCy1k27"><img src="https://i.ibb.co/350zw91k/IMG-2890.jpg" alt="IMG-2890" border="0"></a>
+        </div>
+        <p class="message-text">You're the best! 💖</p>
+        <button class="yes-button" onclick="resetPage()">Send a hug back</button>
     </div>
 
     <script>
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('heartsContainer');
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 10}s`;
+                heart.style.opacity = Math.random() * 0.5 + 0.5;
+                heart.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Handle no button movement
         const noButton = document.getElementById("noButton");
+        let clickCount = 0;
+        
         noButton.addEventListener("mouseover", function() {
             const x = Math.random() * (window.innerWidth - noButton.clientWidth);
             const y = Math.random() * (window.innerHeight - noButton.clientHeight);
             noButton.style.position = "absolute";
             noButton.style.left = `${x}px`;
             noButton.style.top = `${y}px`;
+            
+            clickCount++;
+            if (clickCount > 3) {
+                noButton.style.fontSize = `${16 - (clickCount - 3)}px`;
+                if (clickCount > 7) {
+                    noButton.textContent = "Please?";
+                }
+                if (clickCount > 10) {
+                    noButton.textContent = "Pretty please?";
+                }
+            }
         });
-
+        
+        noButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            const messages = [
+                "Are you sure?",
+                "Really sure?",
+                "Think again please!",
+                "I'm really sorry!",
+                "I'll make it up to you!",
+                "I'll buy you ice cream!",
+                "And chocolates too!",
+                "I promise to be better!"
+            ];
+            
+            document.getElementById("message").textContent = messages[clickCount % messages.length];
+            noButton.style.position = "absolute";
+            const x = Math.random() * (window.innerWidth - noButton.clientWidth);
+            const y = Math.random() * (window.innerHeight - noButton.clientHeight);
+            noButton.style.left = `${x}px`;
+            noButton.style.top = `${y}px`;
+            clickCount++;
+        });
+        
+        // Show love message with email functionality from original code
         function showLove() {
-        document.getElementById("loveMessage").classList.remove("hidden");
-
-        // Send email to multiple recipients
-        fetch("https://formsubmit.co/t.tantona@gmail.com", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name: "Syahida",
-                message: "She clicked 'Yes, I forgive you'!",
-                email: "t.tantona@gmail.com",
-                bcc: "syahidaazwani@gmail.com"
-            })
-        }).catch(err => console.log("Email failed", err));
-    }
+            document.getElementById("mainContainer").classList.add("hidden");
+            document.getElementById("loveMessage").classList.remove("hidden");
+            document.body.style.animation = "rainbow 10s infinite";
+            createConfetti();
+            
+            // Send email to multiple recipients - from the original code
+            fetch("https://formsubmit.co/t.tantona@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: "Syahida",
+                    message: "She clicked 'Yes, I forgive you'!",
+                    email: "t.tantona@gmail.com",
+                    bcc: "syahidaazwani@gmail.com"
+                })
+            }).catch(err => console.log("Email failed", err));
+        }
+        
+        // Teddy bear click effect
+        let teddyClicks = 0;
+        function teddyClick() {
+            teddyClicks++;
+            const teddy = document.querySelector('.teddy');
+            teddy.style.transform = `scale(${1 + (teddyClicks * 0.05)}) rotate(${10 * teddyClicks}deg)`;
+            
+            if (teddyClicks > 5) {
+                document.getElementById("message").textContent = "Please forgive me! Look how sad this teddy bear is without your forgiveness!";
+            }
+            
+            // Create a heart
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = `${50 + (Math.random() * 10 - 5)}%`;
+            heart.style.top = `${50 + (Math.random() * 10 - 5)}%`;
+            document.getElementById('heartsContainer').appendChild(heart);
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#ff4081', '#82b1ff', '#b39ddb', '#ffeb3b', '#a5d6a7'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.width = `${Math.random() * 10 + 5}px`;
+                confetti.style.height = `${Math.random() * 10 + 5}px`;
+                confetti.style.opacity = Math.random();
+                confetti.style.borderRadius = `${Math.random() > 0.5 ? '50%' : '0'}`;
+                
+                // Animation
+                confetti.style.animation = `floatDown ${Math.random() * 3 + 2}s linear infinite`;
+                document.body.appendChild(confetti);
+                
+                // Create keyframes dynamically
+                const keyframes = `
+                @keyframes floatDown {
+                    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+                    100% { transform: translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg); opacity: 0.3; }
+                }`;
+                
+                const style = document.createElement('style');
+                style.innerHTML = keyframes;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Reset page
+        function resetPage() {
+            document.getElementById("loveMessage").classList.add("hidden");
+            document.getElementById("mainContainer").classList.remove("hidden");
+            document.getElementById("message").textContent = "Thank you for forgiving me, Syahida! You're the best! ❤️";
+            document.querySelector('.yes-button').textContent = "I love you!";
+            document.getElementById("noButton").classList.add("hidden");
+        }
+        
+        // Initialize hearts on load
+        window.onload = function() {
+            createHearts();
+        };
     </script>
 </body>
 </html>
