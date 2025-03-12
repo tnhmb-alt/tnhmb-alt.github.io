@@ -1,390 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Syahida, I'm Sorry</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #fce4ec;
-            overflow: hidden;
-            transition: background-color 1s ease;
-        }
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            max-width: 80%;
-            position: relative;
-            z-index: 2;
-            transform-origin: center;
-            animation: pulse 2s infinite alternate;
-        }
-        h1 {
-            color: #d81b60;
-            animation: fadeIn 2s ease-in-out;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            font-size: 2.5rem;
-        }
-        p {
-            font-size: 1.2rem;
-            animation: fadeIn 2.5s ease-in-out;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-        .button-container {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .yes-button {
-            padding: 12px 30px;
-            font-size: 18px;
-            background-color: #d81b60;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        .yes-button:hover {
-            transform: scale(1.1) rotate(3deg);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-            background-color: #ff4081;
-        }
-        .no-button {
-            position: relative;
-            padding: 12px 30px;
-            font-size: 18px;
-            background-color: #b0bec5;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-        }
-        .no-button:hover {
-            background-color: #90a4ae;
-        }
-        .hearts-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .heart {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-color: #ff4081;
-            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 50% 75%, 18% 100%, 0% 38%);
-            opacity: 0;
-            animation: floatUp 4s infinite ease-in-out;
-        }
-        .teddy {
-            width: 120px;
-            height: 120px;
-            margin: 20px auto;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-        .teddy img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        .teddy:hover {
-            transform: scale(1.2) rotate(10deg);
-        }
-        .flowers {
-            position: absolute;
-            bottom: -50px;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            z-index: 0;
-            display: flex;
-            justify-content: space-around;
-        }
-        .flower {
-            width: 40px;
-            height: 40px;
-            background-color: #ff9e80;
-            border-radius: 50%;
-            position: relative;
-            animation: sway 3s infinite ease-in-out alternate;
-        }
-        .flower::before {
-            content: '';
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            width: 6px;
-            height: 60px;
-            background-color: #81c784;
-            transform: translateX(-50%);
-        }
-        .flower:nth-child(2n) {
-            background-color: #b39ddb;
-            animation-delay: 0.5s;
-        }
-        .flower:nth-child(3n) {
-            background-color: #90caf9;
-            animation-delay: 1s;
-        }
-        .hidden {
-            display: none;
-        }
-        #loveMessage {
-            animation: scaleIn 1s ease-in-out;
-        }
-        .love-gif {
-            width: 200px;
-            height: 200px;
-            margin: 20px 0;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .message-text {
-            font-size: 24px;
-            color: #d81b60;
-            margin: 10px 0;
-            animation: bounce 1s infinite alternate;
-        }
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ffeb3b;
-            top: -10px;
-            z-index: 0;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
-        }
-        @keyframes sway {
-            0% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.03); }
-        }
-        @keyframes scaleIn {
-            from { transform: scale(0); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-10px); }
-        }
-        @keyframes rainbow {
-            0% { background-color: #fce4ec; }
-            20% { background-color: #e8f5e9; }
-            40% { background-color: #e3f2fd; }
-            60% { background-color: #fff8e1; }
-            80% { background-color: #f3e5f5; }
-            100% { background-color: #fce4ec; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Snake for Syahida</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #ffe6f2 0%, #ffd6e7 100%);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      text-align: center;
+    }
+    
+    .container {
+      padding: 20px;
+      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+      max-width: 600px;
+      width: 95%;
+    }
+    
+    h1 {
+      color: #ff1493;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      color: #333;
+      margin-bottom: 15px;
+    }
+    
+    .game-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      background-color: #ffecf5;
+      border: 3px solid #ff69b4;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    #game-canvas {
+      background-color: #ffecf5;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .control-btn {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .control-btn:hover {
+      background-color: #ff1493;
+    }
+    
+    .start-btn {
+      background-color: #ff1493;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    
+    .start-btn:hover {
+      background-color: #ff0080;
+    }
+    
+    .score {
+      font-size: 20px;
+      color: #ff1493;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(255, 20, 147, 0.5);
+      font-size: 18px;
+      color: #ff1493;
+      text-align: center;
+      display: none;
+      z-index: 10;
+      width: 80%;
+    }
+    
+    .win-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 20, 147, 0.7);
+      text-align: center;
+      z-index: 100;
+      max-width: 80%;
+      display: none;
+    }
+    
+    .win-message h2 {
+      color: #ff1493;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    
+    .win-message p {
+      margin-bottom: 20px;
+    }
+    
+    .hearts-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      color: #ff1493;
+      animation: float 4s linear forwards;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    @media (max-width: 500px) {
+      .game-container {
+        height: 300px;
+      }
+      
+      #game-canvas {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="hearts-container" id="heartsContainer"></div>
-    <div class="flowers">
-        <div class="flower"></div>
-        <div class="flower"></div>
-        <div class="flower"></div>
-        <div class="flower"></div>
-        <div class="flower"></div>
-        <div class="flower"></div>
+  <div class="hearts-container" id="heartsContainer"></div>
+  
+  <div class="container">
+    <h1>Love Snake for Syahida ❤️</h1>
+    <p>Collect hearts to express your love! Get 10 hearts to win!</p>
+    
+    <div class="game-container">
+      <canvas id="game-canvas" width="400" height="400"></canvas>
+      <div class="message" id="message">Press Start to play</div>
     </div>
     
-    <div class="container" id="mainContainer">
-        <h1>Syahida, I'm Really Sorry 😞</h1>
-        <p id="message">I never meant to hurt you. It was a silly mistake, and I feel terrible about it. Can you please forgive me, Sayang?</p>
-        
-        <div class="teddy" onclick="teddyClick()">
-            <div class="tenor-gif-embed" data-postid="18519830" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a href="https://tenor.com/view/love-bear-panda-gif-18519830">Love Bear Sticker</a>from <a href="https://tenor.com/search/love-stickers">Love Stickers</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-        </div>
-        
-        <div class="button-container">
-            <button class="yes-button" onclick="showLove()">Yes, I forgive you</button>
-            <button class="no-button" id="noButton">No</button>
-        </div>
-    </div>
+    <div class="score" id="score">Hearts: 0/10</div>
     
-    <div id="loveMessage" class="hidden container">
-        <h2 class="message-text">Yay! Thank you, Syahida! ❤️</h2>
-        <div class="love-gif">
-            <a href="https://ibb.co/RGCy1k27"><img src="https://i.ibb.co/350zw91k/IMG-2890.jpg" alt="IMG-2890" border="0"></a>
-        </div>
-        <p class="message-text">You're the best! 💖</p>
-        <button class="yes-button" onclick="resetPage()">Send a hug back</button>
+    <button class="start-btn" id="startButton">Start Game</button>
+    
+    <div class="controls">
+      <button class="control-btn" id="upButton">↑</button>
+      <div style="display: flex; gap: 10px;">
+        <button class="control-btn" id="leftButton">←</button>
+        <button class="control-btn" id="rightButton">→</button>
+      </div>
+      <button class="control-btn" id="downButton">↓</button>
     </div>
-
-    <script>
+  </div>
+  
+  <div class="win-message" id="winMessage">
+    <h2>❤️ For My Gadis Samurai ❤️</h2>
+    <p>You've collected all 10 hearts!</p>
+    <p>Syahida, a name whispered on breezes, a sun-warmed stone held in my palm.</p>
+<p>No meter can hold the rhythm of my heart, no rhyme can confine the wild bloom of feeling.</p>
+<p>You are the quiet dawn, the sudden star, the laughter that spills like rain.</p>
+<p>A landscape painted in hues I'd never known, a depth that draws me, fearless, down.</p>
+<p>There is no measure, no perfect phrase, only this: a breath, a longing, Syahida, you.</p>
+    <button class="start-btn" id="playAgainButton">Play Again</button>
+  </div>
+  
+  <script>
+    // Game elements
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    const startButton = document.getElementById('startButton');
+    const scoreDisplay = document.getElementById('score');
+    const message = document.getElementById('message');
+    const winMessage = document.getElementById('winMessage');
+    const playAgainButton = document.getElementById('playAgainButton');
+    const heartsContainer = document.getElementById('heartsContainer');
+    
+    // Direction buttons
+    const upButton = document.getElementById('upButton');
+    const leftButton = document.getElementById('leftButton');
+    const rightButton = document.getElementById('rightButton');
+    const downButton = document.getElementById('downButton');
+    
+    // Game constants
+    const GRID_SIZE = 20;
+    const GAME_SPEED = 150; // ms
+    
+    // Love messages
+    const loveMessages = [
+      "You are a wonder.",
+      "You are the dawn that breaks through my darkest nights.",
+      "My heart has found its home within yours.",
+      "Your smile is my sun.",
+      "My devotion to you is timeless, an eternal promise.",
+      "My love for you knows no end.",
+      "Syahida, your sweetness is a treasure I cherish.",
+      "You are the missing piece that has made my life whole.",
+      "The rhythm of my heart echoes the sound of your name.",
+      "You are the center of my universe, the essence of my being."
+    ];
+    
+    // Game variables
+    let snake = [];
+    let food = {};
+    let direction = 'right';
+    let nextDirection = 'right';
+    let gameInterval;
+    let gameRunning = false;
+    let score = 0;
+    let gameSpeed = GAME_SPEED;
+    
+    // Initialize game
+    function initGame() {
+      // Reset snake
+      snake = [
+        {x: 5, y: 10},
+        {x: 4, y: 10},
+        {x: 3, y: 10}
+      ];
+      
+      // Reset direction
+      direction = 'right';
+      nextDirection = 'right';
+      
+      // Reset score
+      score = 0;
+      updateScore();
+      
+      // Create first food
+      createFood();
+      
+      // Clear the canvas
+      clearCanvas();
+      
+      // Draw initial state
+      drawSnake();
+      drawFood();
+    }
+    
+    // Clear the canvas
+    function clearCanvas() {
+      ctx.fillStyle = '#ffecf5';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    // Draw snake
+    function drawSnake() {
+      snake.forEach((segment, index) => {
+        // Head is pink, body is lighter pink
+        if (index === 0) {
+          ctx.fillStyle = '#ff1493';
+        } else {
+          ctx.fillStyle = '#ff69b4';
+        }
+        
+        ctx.fillRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+        
+        // Add white border
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(segment.x * GRID_SIZE, segment.y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+        
+        // Draw heart on the head
+        if (index === 0) {
+          drawHeart(segment.x * GRID_SIZE + GRID_SIZE/2, segment.y * GRID_SIZE + GRID_SIZE/2, GRID_SIZE/2);
+        }
+      });
+    }
+    
+    // Draw heart shape
+    function drawHeart(x, y, size) {
+      ctx.fillStyle = 'white';
+      
+      ctx.beginPath();
+      ctx.moveTo(x, y + size/4);
+      
+      // Left curve
+      ctx.bezierCurveTo(
+        x - size/2, y - size/2,
+        x - size, y,
+        x, y + size
+      );
+      
+      // Right curve
+      ctx.bezierCurveTo(
+        x + size, y,
+        x + size/2, y - size/2,
+        x, y + size/4
+      );
+      
+      ctx.fill();
+    }
+    
+    // Create food
+    function createFood() {
+      // Generate random position
+      food = {
+        x: Math.floor(Math.random() * (canvas.width / GRID_SIZE)),
+        y: Math.floor(Math.random() * (canvas.height / GRID_SIZE))
+      };
+      
+      // Make sure food doesn't appear on snake
+      for (let segment of snake) {
+        if (segment.x === food.x && segment.y === food.y) {
+          return createFood(); // Try again
+        }
+      }
+    }
+    
+    // Draw food (heart)
+    function drawFood() {
+      ctx.fillStyle = '#ff1493';
+      
+      const centerX = food.x * GRID_SIZE + GRID_SIZE/2;
+      const centerY = food.y * GRID_SIZE + GRID_SIZE/2;
+      const size = GRID_SIZE * 0.8;
+      
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY + size/4);
+      
+      // Left curve
+      ctx.bezierCurveTo(
+        centerX - size/2, centerY - size/2,
+        centerX - size, centerY,
+        centerX, centerY + size
+      );
+      
+      // Right curve
+      ctx.bezierCurveTo(
+        centerX + size, centerY,
+        centerX + size/2, centerY - size/2,
+        centerX, centerY + size/4
+      );
+      
+      ctx.fill();
+      
+      // Add pulsing effect
+      const pulseSize = Math.sin(Date.now() / 200) * 2 + GRID_SIZE * 0.2;
+      
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.lineWidth = 2;
+      
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, pulseSize, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    // Move snake
+    function moveSnake() {
+      // Update direction
+      direction = nextDirection;
+      
+      // Create new head
+      const head = {x: snake[0].x, y: snake[0].y};
+      
+      // Update head position based on direction
+      switch(direction) {
+        case 'up':
+          head.y -= 1;
+          break;
+        case 'down':
+          head.y += 1;
+          break;
+        case 'left':
+          head.x -= 1;
+          break;
+        case 'right':
+          head.x += 1;
+          break;
+      }
+      
+      // Check for collisions
+      if (checkCollision(head)) {
+        gameOver();
+        return;
+      }
+      
+      // Add new head
+      snake.unshift(head);
+      
+      // Check if snake eats food
+      if (head.x === food.x && head.y === food.y) {
+        // Increase score
+        score++;
+        updateScore();
+        
+        // Show love message
+        showLoveMessage();
+        
         // Create floating hearts
-        function createHearts() {
-            const heartsContainer = document.getElementById('heartsContainer');
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.style.left = `${Math.random() * 100}%`;
-                heart.style.animationDelay = `${Math.random() * 10}s`;
-                heart.style.opacity = Math.random() * 0.5 + 0.5;
-                heart.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
-                heartsContainer.appendChild(heart);
-            }
+        createFloatingHearts(5);
+        
+        // Create new food
+        createFood();
+        
+        // Check if game is won
+        if (score >= 10) {
+          gameWon();
+          return;
         }
-        
-        // Handle no button movement
-        const noButton = document.getElementById("noButton");
-        let clickCount = 0;
-        
-        noButton.addEventListener("mouseover", function() {
-            const x = Math.random() * (window.innerWidth - noButton.clientWidth);
-            const y = Math.random() * (window.innerHeight - noButton.clientHeight);
-            noButton.style.position = "absolute";
-            noButton.style.left = `${x}px`;
-            noButton.style.top = `${y}px`;
-            
-            clickCount++;
-            if (clickCount > 3) {
-                noButton.style.fontSize = `${16 - (clickCount - 3)}px`;
-                if (clickCount > 7) {
-                    noButton.textContent = "Please?";
-                }
-                if (clickCount > 10) {
-                    noButton.textContent = "Pretty please?";
-                }
-            }
-        });
-        
-        noButton.addEventListener("click", function(e) {
-            e.preventDefault();
-            const messages = [
-                "Are you sure?",
-                "Really sure?",
-                "Think again please!",
-                "I'm really sorry!",
-                "I'll make it up to you!",
-                "I'll buy you ice cream!",
-                "And chocolates too!",
-                "I promise to be better!"
-            ];
-            
-            document.getElementById("message").textContent = messages[clickCount % messages.length];
-            noButton.style.position = "absolute";
-            const x = Math.random() * (window.innerWidth - noButton.clientWidth);
-            const y = Math.random() * (window.innerHeight - noButton.clientHeight);
-            noButton.style.left = `${x}px`;
-            noButton.style.top = `${y}px`;
-            clickCount++;
-        });
-        
-        // Show love message with email functionality from original code
-        function showLove() {
-            document.getElementById("mainContainer").classList.add("hidden");
-            document.getElementById("loveMessage").classList.remove("hidden");
-            document.body.style.animation = "rainbow 10s infinite";
-            createConfetti();
-            
-            // Send email to multiple recipients - from the original code
-            fetch("https://formsubmit.co/t.tantona@gmail.com", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: "Syahida",
-                    message: "She clicked 'Yes, I forgive you'!",
-                    email: "t.tantona@gmail.com",
-                    bcc: "syahidaazwani@gmail.com"
-                })
-            }).catch(err => console.log("Email failed", err));
+      } else {
+        // Remove tail
+        snake.pop();
+      }
+    }
+    
+    // Check for collisions
+    function checkCollision(head) {
+      // Collision with walls - wrap around instead
+      if (head.x < 0) head.x = Math.floor(canvas.width / GRID_SIZE) - 1;
+      if (head.x >= Math.floor(canvas.width / GRID_SIZE)) head.x = 0;
+      if (head.y < 0) head.y = Math.floor(canvas.height / GRID_SIZE) - 1;
+      if (head.y >= Math.floor(canvas.height / GRID_SIZE)) head.y = 0;
+      
+      // Collision with self
+      for (let i = 1; i < snake.length; i++) {
+        if (head.x === snake[i].x && head.y === snake[i].y) {
+          return true;
         }
-        
-        // Teddy bear click effect
-        let teddyClicks = 0;
-        function teddyClick() {
-            teddyClicks++;
-            const teddy = document.querySelector('.teddy');
-            teddy.style.transform = `scale(${1 + (teddyClicks * 0.05)}) rotate(${10 * teddyClicks}deg)`;
-            
-            if (teddyClicks > 5) {
-                document.getElementById("message").textContent = "Please forgive me! Look how sad this teddy bear is without your forgiveness!";
-            }
-            
-            // Create a heart
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.style.left = `${50 + (Math.random() * 10 - 5)}%`;
-            heart.style.top = `${50 + (Math.random() * 10 - 5)}%`;
-            document.getElementById('heartsContainer').appendChild(heart);
-        }
-        
-        // Create confetti effect
-        function createConfetti() {
-            const colors = ['#ff4081', '#82b1ff', '#b39ddb', '#ffeb3b', '#a5d6a7'];
-            for (let i = 0; i < 100; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = `${Math.random() * 100}%`;
-                confetti.style.width = `${Math.random() * 10 + 5}px`;
-                confetti.style.height = `${Math.random() * 10 + 5}px`;
-                confetti.style.opacity = Math.random();
-                confetti.style.borderRadius = `${Math.random() > 0.5 ? '50%' : '0'}`;
-                
-                // Animation
-                confetti.style.animation = `floatDown ${Math.random() * 3 + 2}s linear infinite`;
-                document.body.appendChild(confetti);
-                
-                // Create keyframes dynamically
-                const keyframes = `
-                @keyframes floatDown {
-                    0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
-                    100% { transform: translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg); opacity: 0.3; }
-                }`;
-                
-                const style = document.createElement('style');
-                style.innerHTML = keyframes;
-                document.head.appendChild(style);
-            }
-        }
-        
-        // Reset page
-        function resetPage() {
-            document.getElementById("loveMessage").classList.add("hidden");
-            document.getElementById("mainContainer").classList.remove("hidden");
-            document.getElementById("message").textContent = "Thank you for forgiving me, Syahida! You're the best! ❤️";
-            document.querySelector('.yes-button').textContent = "I love you!";
-            document.getElementById("noButton").classList.add("hidden");
-        }
-        
-        // Initialize hearts on load
-        window.onload = function() {
-            createHearts();
-        };
-    </script>
+      }
+      
+      return false;
+    }
+    
+    // Update score display
+    function updateScore() {
+      scoreDisplay.textContent = `Hearts: ${score}/10`;
+    }
+    
+    // Game loop
+    function gameLoop() {
+      clearCanvas();
+      moveSnake();
+      drawSnake();
+      drawFood();
+    }
+    
+    // Start game
+    function startGame() {
+      if (gameRunning) return;
+      
+      initGame();
+      gameRunning = true;
+      message.style.display = 'none';
+      startButton.textContent = 'Restart Game';
+      
+      // Start game loop
+      gameInterval = setInterval(gameLoop, gameSpeed);
+    }
+    
+    // Game over
+    function gameOver() {
+      gameRunning = false;
+      clearInterval(gameInterval);
+      
+      message.textContent = 'Game Over! Click Start to play again';
+      message.style.display = 'block';
+    }
+    
+    // Game won
+    function gameWon() {
+      gameRunning = false;
+      clearInterval(gameInterval);
+      
+      // Show win message
+      winMessage.style.display = 'block';
+      
+      // Create hearts celebration
+      createFloatingHearts(100);
+    }
+    
+    // Show love message
+    function showLoveMessage() {
+      message.textContent = loveMessages[score - 1];
+      message.style.display = 'block';
+      
+      setTimeout(() => {
+        message.style.display = 'none';
+      }, 4000);
+    }
+    
+    // Create floating hearts
+    function createFloatingHearts(count) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'heart';
+          heart.innerHTML = '❤️';
+          
+          // Random position
+          const startPos = Math.random() * 100;
+          heart.style.left = `${startPos}%`;
+          heart.style.bottom = '0';
+          
+          // Random size
+          const size = 15 + Math.random() * 20;
+          heart.style.fontSize = `${size}px`;
+          
+          // Random animation duration
+          const duration = 3 + Math.random() * 3;
+          heart.style.animationDuration = `${duration}s`;
+          
+          heartsContainer.appendChild(heart);
+          
+          // Remove heart after animation ends
+          setTimeout(() => {
+            heart.remove();
+          }, duration * 1000);
+        }, i * 50);
+      }
+    }
+    
+    // Event listeners
+    startButton.addEventListener('click', startGame);
+    
+    playAgainButton.addEventListener('click', () => {
+      winMessage.style.display = 'none';
+      startGame();
+    });
+    
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      switch(e.key) {
+        case 'ArrowUp':
+          if (direction !== 'down') nextDirection = 'up';
+          break;
+        case 'ArrowDown':
+          if (direction !== 'up') nextDirection = 'down';
+          break;
+        case 'ArrowLeft':
+          if (direction !== 'right') nextDirection = 'left';
+          break;
+        case 'ArrowRight':
+          if (direction !== 'left') nextDirection = 'right';
+          break;
+      }
+    });
+    
+    // Button controls
+    upButton.addEventListener('click', () => {
+      if (direction !== 'down') nextDirection = 'up';
+    });
+    
+    downButton.addEventListener('click', () => {
+      if (direction !== 'up') nextDirection = 'down';
+    });
+    
+    leftButton.addEventListener('click', () => {
+      if (direction !== 'right') nextDirection = 'left';
+    });
+    
+    rightButton.addEventListener('click', () => {
+      if (direction !== 'left') nextDirection = 'right';
+    });
+    
+    // Initialize game display
+    initGame();
+    message.style.display = 'block';
+  </script>
 </body>
 </html>
